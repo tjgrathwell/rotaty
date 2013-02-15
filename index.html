@@ -1,0 +1,232 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>rotaty</title>
+
+  <script type='text/nonsense' class='before'>
+(function($, payload){
+  if ($) {
+    return payload($);
+  }
+
+  var script = document.createElement( 'script' );
+  script.type = 'text/javascript';
+  script.src = 'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js';
+
+  var readystate;
+
+  script.onload = script.onreadystatechange = function() {
+    if ( !(readystate = this.readyState) || readystate == 'loaded' || readystate == 'complete') {
+      payload(window.jQuery);
+
+      window.jQuery(script).remove();
+    }
+  };
+
+  document.documentElement.childNodes[0].appendChild( script );
+})(window.jQuery, function($) {
+  </script>
+
+  <script type="text/nonsense" class='after'>
+});
+  </script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      height: 100%;
+    }
+
+    body {
+      text-align: center;
+      font-family: sans-serif;
+    }
+
+    .content {
+      border-left: 3px dotted black;
+      border-right: 3px dotted black;
+      padding: 5px auto;
+      min-height: 100%;
+      width: 800px;
+      margin: 0 auto;
+      background-color: lightgrey;
+    }
+
+    textarea.css {
+      width: 780px;
+      height: 160px;
+      margin: 5px 0;
+    }
+
+    textarea.js {
+      width: 780px;
+      height: 180px;
+    }
+
+    label {
+      margin-left: 5px;
+    }
+
+    ul {
+      text-align: left;
+      width: 500px;
+      margin: 0 auto;
+    }
+
+    li {
+      margin-bottom: 10px;
+    }
+
+    p.hint {
+      font-size: 9pt;
+    }
+
+    .bookmarklet {
+      padding-top: 20px;
+      margin-bottom: 30px;
+    }
+
+    .bookmarklet a {
+      font-size: 32pt;
+    }
+
+    .arrow-left, .arrow-right {
+      font-size: 28pt;
+      display: inline-block;
+    }
+
+    .arrow-left {
+      margin-right: 15px;
+    }
+
+    .arrow-right {
+      margin-left: 15px;
+    }
+
+    h2 {
+      font-style: italic;
+      margin-bottom: 15px;
+    }
+
+    .generator {
+      margin: 20px 0;
+    }
+
+    * {
+      -moz-transition: -moz-transform 1s;
+      -webkit-transition: -webkit-transform 1s;
+      transition: transform 1s;
+    }
+
+    .rotated {
+      -moz-transform: rotate(360deg);
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+
+    .bubble {
+      border: 1px solid darkgray;
+      padding: 10px;
+      border-radius: 15px;
+      background-color: lightyellow;
+      width: 600px;
+      margin: 0 auto;
+    }
+  </style>
+
+  <script src="crunch.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      function fullScriptText () {
+        var cssText = $('textarea.css').val().replace(/[\n\r]/g, '');
+        var payloadText = $('textarea.js').val();
+        payloadText = payloadText.replace('the_css_from_the_above_textarea', '"' + cssText + '"');
+        return $('script.before').text() + payloadText + $('script.after').text();
+      }
+
+      function recompile () {
+        var crunched = crunch(fullScriptText());
+        $('.bookmarklet a').attr('href', 'javascript:' + crunched);
+        $('.bookmarklet a').text($('.bookmarklet-name').val());
+      }
+
+      $('.create-bookmarklet').click(recompile);
+      $('.dump-source').click(function () {
+        console.log(fullScriptText());
+      });
+
+      recompile();
+
+      setInterval(function () {
+        if (Math.floor(Math.random() * 2)) {
+          $('.arrow-left').toggleClass('rotated');
+        } else {
+          $('.arrow-right').toggleClass('rotated');
+        }
+      }, 8000);
+    });
+  </script>
+</head>
+
+<body>
+
+<div class='content'>
+  <div class='bookmarklet'>
+    <div class='arrow-left'>►</div><a href="#"></a><div class='arrow-right'>◄</div>
+    <p class='hint'>(Drag it to your bookmarks bar!)</p>
+  </div>
+
+  <em>a bookmarklet to confuse or delight</em>
+
+  <textarea class='css'>
+* {
+  -moz-transition: -moz-transform 1s;
+  -webkit-transition: -webkit-transform 1s;
+  transition: transform 1s;
+}
+.rotaty {
+  -moz-transform: rotate(360deg);
+  -webkit-transform: rotate(360deg);
+  transform: rotate(360deg);
+}
+  </textarea>
+  <textarea class='js'>
+$(document).ready(function () {
+  var selector = '*:visible';
+  var delay = 1000;
+  $('body').append($('<style>' + the_css_from_the_above_textarea + '</style>'));
+
+  setInterval(function () {
+    var allStuff = $(selector);
+    var randomIndex = Math.floor(Math.random() * allStuff.length);
+    allStuff.eq(randomIndex).toggleClass('rotaty')
+  }, delay);
+});
+  </textarea>
+
+  <div class='generator'>
+    <button class='create-bookmarklet'>Recompile Bookmarklet</button>
+    <label>Name: <input class='bookmarklet-name' type='text' value='rotaty'></label>
+    <button class='dump-source'>Log source to console</button>
+  </div>
+
+  <div class='bubble'>
+    <h2>Serving Suggestions</h2>
+    <ul>
+      <li>Make 'delay' really short for an intense experience in seasickness. (You can get the same effect by clicking the bookmarklet a lot.)</li>
+      <li>Sneak this code into a project your colleague is working on but crank 'delay' up really high. See if they are eventually driven insane.</li>
+      <li>Replace 'selector' with something interesting and site-specific for a tailored experience.</li>
+      <li>Change '360deg' to '180deg' and watch a page turn itself upside out and back.</li>
+    </ul>
+  </div>
+
+</div>
+</body>
+</html>
