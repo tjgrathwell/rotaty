@@ -73,6 +73,7 @@
   animation-iteration-count: infinite;
   animation-duration: 1s;
   animation-name: rotateForever;
+  animation-timing-function: linear;
 }
 
 @keyframes rotateForever {
@@ -284,14 +285,31 @@ $(document).ready(function () {
 
     function addVendorPrefixesAndRemoveNewlines(css) {
       var resultLines = [];
+      var sourceLines = css.split('\n');
+      for (var i = 0; i < sourceLines.length; i++) {
+        var line = sourceLines[i];
+        if (line.match(/keyframes/)) {
+          // Gather the entire @keyframes directive into a single line
+          var braceCount = 1;
+          i += 1;
+          var keyframeLines = [line];
+          while (braceCount > 0 && i < sourceLines.length) {
+            line = sourceLines[i];
+            keyframeLines.push(line);
 
-      $.each(css.split('\n'), function (ix, line) {
+            braceCount += line.match(/{/) ? line.match(/{/g).length : 0;
+            braceCount -= line.match(/}/) ? line.match(/}/g).length : 0;
+
+            i++;
+          }
+          line = keyframeLines.join('');
+        }
         if (line.match(vendoredProperties)) {
           resultLines.push(vendorizeLine(line, '-moz'));
           resultLines.push(vendorizeLine(line, '-webkit'));
         }
         resultLines.push(line);
-      });
+      }
       return resultLines.join('');
     }
 
