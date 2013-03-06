@@ -68,6 +68,54 @@
 }
   </script>
 
+  <script type="text/nonsense" class='zotaty-css'>
+.rotaty {
+  animation-iteration-count: infinite;
+  animation-duration: 1s;
+  animation-name: rotateForever;
+}
+
+@keyframes rotateForever {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+  </script>
+
+  <script type="text/nonsense" class='rotaty-js'>
+$(document).ready(function () {
+  var selector = '*:visible';
+  var delay = 1000;
+  $('body').append($('&lt;style&gt;' + the_css_from_the_above_textarea + '&lt;/style&gt;'));
+
+  setInterval(function () {
+    var allStuff = $(selector);
+    var randomIndex = Math.floor(Math.random() * allStuff.length);
+    allStuff.eq(randomIndex).toggleClass('rotaty')
+  }, delay);
+});
+  </script>
+
+  <script type="text/nonsense" class='zotaty-js'>
+$(document).ready(function () {
+  $('body').append($('&lt;style&gt;' + the_css_from_the_above_textarea + '&lt;/style&gt;'));
+
+  var $hoveredElement;
+  $(document).on('mouseover', function (event) {
+    $hoveredElement = $(event.target);
+  });
+  $(document).on('keypress', function (event) {
+    if (event.which === 'z'.charCodeAt(0)) {
+      $hoveredElement.toggleClass('rotaty');
+    }
+  });
+});
+  </script>
+
   <style>
     * {
       margin: 0;
@@ -75,7 +123,7 @@
     }
 
     body, html {
-      height: 100%;
+      min-height: 100%;
     }
 
     body {
@@ -228,7 +276,7 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
 
   <script>
-    var vendoredProperties = /\b(transition|transform)\b/g;
+    var vendoredProperties = /\b(transition|transform|animation|keyframes)\b/g;
 
     function vendorizeLine(line, prefix) {
       return line.replace(vendoredProperties, prefix + '-$1')
@@ -264,16 +312,25 @@
         $('.bookmarklet a').text($('.bookmarklet-name').val());
       }
 
-      function populateCssTextarea(scriptClass) {
-        var scriptText = $('script.' + scriptClass).text().replace(/^\s+/, '');
-        $('textarea.css').val(scriptText);
+      function populateTextarea(textareaClass, scriptClass) {
+        var $script = $('script.' + scriptClass + '-' + textareaClass);
+        if ($script.length === 0) {
+          $script = $('script.rotaty-' + textareaClass);
+        }
+        var scriptText = $script.text();
+        scriptText = scriptText.replace(/^\s+/, '');
+        scriptText = scriptText.replace(/&gt;/g, '>');
+        scriptText = scriptText.replace(/&lt;/g, '<');
+        $('textarea.' + textareaClass).val(scriptText);
       }
 
-      populateCssTextarea('rotaty-css');
+      populateTextarea('css', 'rotaty');
+      populateTextarea('js', 'rotaty');
 
       $('.alternatives li').click(function () {
         var bookmarkletName = $(this).text();
-        populateCssTextarea(bookmarkletName + '-css');
+        populateTextarea('css', bookmarkletName);
+        populateTextarea('js', bookmarkletName);
         $('.bookmarklet-name').val(bookmarkletName);
         recompile();
       });
@@ -307,19 +364,7 @@
   <h2>a bookmarklet to confuse or delight</h2>
 
   <textarea class='css'></textarea>
-  <textarea class='js'>
-$(document).ready(function () {
-  var selector = '*:visible';
-  var delay = 1000;
-  $('body').append($('<style>' + the_css_from_the_above_textarea + '</style>'));
-
-  setInterval(function () {
-    var allStuff = $(selector);
-    var randomIndex = Math.floor(Math.random() * allStuff.length);
-    allStuff.eq(randomIndex).toggleClass('rotaty')
-  }, delay);
-});
-  </textarea>
+  <textarea class='js'></textarea>
 
   <button class='dump-source'>Log source to console</button>
   <div class='generator'>
@@ -334,6 +379,7 @@ $(document).ready(function () {
     <li>mirrory</li>
     <li>flippy</li>
     <li>rotaty</li>
+    <li>zotaty</li>
   </ul>
 
   <div class='bubble'>
