@@ -68,6 +68,12 @@
 }
   </script>
 
+  <script type="text/nonsense" class='trippy-css'>
+* {
+  transition: background-color 1s, color 1s;
+}
+  </script>
+
   <script type="text/nonsense" class='zotaty-css'>
 .rotaty {
   animation-iteration-count: infinite;
@@ -97,6 +103,29 @@ $(document).ready(function () {
     var allStuff = $(selector);
     var randomIndex = Math.floor(Math.random() * allStuff.length);
     allStuff.eq(randomIndex).toggleClass('rotaty')
+  }, delay);
+});
+  </script>
+
+
+  <script type="text/nonsense" class='trippy-js'>
+$(document).ready(function () {
+  var selector = '*:visible';
+  var delay = 1000;
+  $('body').append($('&lt;style&gt;' + the_css_from_the_above_textarea + '&lt;/style&gt;'));
+
+  function randomColor() {
+    return Math.floor(Math.random() * 255);
+  }
+
+  setInterval(function () {
+    var allStuff = $(selector);
+    var randomIndex = Math.floor(Math.random() * allStuff.length);
+
+    var prop = (Math.random() > 0.5) ? 'color' : 'background-color';
+    var color = 'rgb(' + randomColor() + ', ' + randomColor() + ', ' + randomColor() + ')';
+
+    allStuff.eq(randomIndex).css(prop, color);
   }, delay);
 });
   </script>
@@ -397,6 +426,7 @@ $(document).ready(function () {
     <li>mirrory</li>
     <li>flippy</li>
     <li>rotaty</li>
+    <li>trippy</li>
     <li>zotaty</li>
   </ul>
 
