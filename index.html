@@ -343,48 +343,74 @@ $(document).ready(function () {
     }
 
     $(document).ready(function () {
-      function fullScriptText () {
-        var cssText = $('textarea.css').val().replace(/\r/g, '');
+      function fullScriptText(raw_css, raw_js) {
+        var cssText = raw_css.replace(/\r/g, '');
 
         cssText = addVendorPrefixesAndRemoveNewlines(cssText);
 
-        var payloadText = $('textarea.js').val();
+        var payloadText = raw_js;
         payloadText = payloadText.replace('the_css_from_the_above_textarea', '"' + cssText + '"');
         return $('script.before').text() + payloadText + $('script.after').text();
       }
 
-      function recompile () {
-        var crunched = crunch(fullScriptText());
-        $('.bookmarklet a').attr('href', 'javascript:' + crunched);
-        $('.bookmarklet a').text($('.bookmarklet-name').val());
+      function selectedScriptText() {
+        return fullScriptText($('textarea.css').val(), $('textarea.js').val());
       }
 
-      function populateTextarea(textareaClass, scriptClass) {
-        var $script = $('script.' + scriptClass + '-' + textareaClass);
+      function addBookmarkletAsHref($el, script) {
+        var crunched = crunch(script);
+        $el.attr('href', 'javascript:' + crunched);
+      }
+
+      function recompile() {
+        var $link = $('.bookmarklet a');
+        addBookmarkletAsHref($link, selectedScriptText());
+        $link.text($('.bookmarklet-name').val());
+      }
+
+      function scriptElementFor(cssOrJs, scriptClass) {
+        var $script = $('script.' + scriptClass + '-' + cssOrJs);
         if ($script.length === 0) {
-          $script = $('script.rotaty-' + textareaClass);
+          $script = $('script.rotaty-' + cssOrJs);
         }
         var scriptText = $script.text();
         scriptText = scriptText.replace(/^\s+/, '');
         scriptText = scriptText.replace(/&gt;/g, '>');
-        scriptText = scriptText.replace(/&lt;/g, '<');
-        $('textarea.' + textareaClass).val(scriptText);
+        return scriptText.replace(/&lt;/g, '<');
       }
 
-      populateTextarea('css', 'rotaty');
-      populateTextarea('js', 'rotaty');
+      function populateTextareas(scriptClass) {
+        $('textarea.css').val(scriptElementFor('css', scriptClass));
+        $('textarea.js').val(scriptElementFor('js', scriptClass));
+      }
 
-      $('.alternatives li').click(function () {
+      populateTextareas('rotaty');
+
+      var $alternatives = $('.alternatives li');
+      $alternatives.each(function (ix, el) {
+        var $el = $(el);
+        var $link = $('<a></a>');
+
+        var js = scriptElementFor('js', $el.text());
+        var css = scriptElementFor('css', $el.text());
+
+        var script = fullScriptText(css, js);
+        addBookmarkletAsHref($link, script);
+        $link.text($el.text());
+        $el.empty().append($link)
+      });
+
+      $alternatives.click(function () {
         var bookmarkletName = $(this).text();
-        populateTextarea('css', bookmarkletName);
-        populateTextarea('js', bookmarkletName);
+        populateTextareas(bookmarkletName);
         $('.bookmarklet-name').val(bookmarkletName);
         recompile();
+        return false;
       });
 
       $('.create-bookmarklet').click(recompile);
       $('.dump-source').click(function () {
-        console.log(fullScriptText());
+        console.log(selectedScriptText());
       });
 
       recompile();
