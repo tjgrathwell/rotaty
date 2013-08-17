@@ -36,7 +36,7 @@
 * {
   transition: transform 1s;
 }
-.rotaty {
+.BOOKMARKLET_NAME {
   transform: rotate(360deg);
 }
   </script>
@@ -45,7 +45,7 @@
 * {
   transition: transform 1s;
 }
-.rotaty {
+.BOOKMARKLET_NAME {
   transform: rotateY(180deg);
 }
   </script>
@@ -54,7 +54,7 @@
 * {
   transition: transform 1s;
 }
-.rotaty {
+.BOOKMARKLET_NAME {
   transform: rotate(180deg);
 }
   </script>
@@ -63,7 +63,7 @@
 * {
   transition: transform 1s;
 }
-.rotaty {
+.BOOKMARKLET_NAME {
   transform: rotateX(180deg);
 }
   </script>
@@ -75,7 +75,7 @@
   </script>
 
   <script type="text/nonsense" class='zotaty-css'>
-.rotaty {
+.BOOKMARKLET_NAME {
   animation-iteration-count: infinite;
   animation-duration: 1s;
   animation-name: rotateForever;
@@ -93,6 +93,18 @@
 }
   </script>
 
+  <script type="text/nonsense" class='blurry-css'>
+.BOOKMARKLET_NAME {
+  filter: blur(5px);
+}
+  </script>
+
+  <script type="text/nonsense" class='inverty-css'>
+.BOOKMARKLET_NAME {
+  filter: invert(100%);
+}
+  </script>
+
   <script type="text/nonsense" class='rotaty-js'>
 $(document).ready(function () {
   var selector = '*:visible';
@@ -102,11 +114,10 @@ $(document).ready(function () {
   setInterval(function () {
     var allStuff = $(selector);
     var randomIndex = Math.floor(Math.random() * allStuff.length);
-    allStuff.eq(randomIndex).toggleClass('rotaty')
+    allStuff.eq(randomIndex).toggleClass('BOOKMARKLET_NAME')
   }, delay);
 });
   </script>
-
 
   <script type="text/nonsense" class='trippy-js'>
 $(document).ready(function () {
@@ -140,173 +151,19 @@ $(document).ready(function () {
   });
   $(document).on('keypress', function (event) {
     if (event.which === 'z'.charCodeAt(0)) {
-      $hoveredElement.toggleClass('rotaty');
+      $hoveredElement.toggleClass('BOOKMARKLET_NAME');
     }
   });
 });
   </script>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-    }
-
-    body, html {
-      min-height: 100%;
-    }
-
-    body {
-      text-align: center;
-      font-family: "Helvetica Neue", sans-serif;
-      background-color: #eee;
-      background: -webkit-linear-gradient(top, #eee, #aaa);
-    }
-
-    h2 {
-      margin: 10px 0;
-      font-style: italic;
-      font-weight: normal;
-      font-size: 16px;
-    }
-
-    .content {
-      padding: 20px;
-      width: 800px;
-      margin: 0 auto;
-      background-color: white;
-      box-shadow: 0 0 10px 0 #555;
-      min-height: 100%;
-    }
-
-    textarea {
-      padding: 5px;
-      width: 90%;
-      height: 180px;
-      margin: 10px auto;
-      box-shadow: 0 0 4px 0 #ccc;
-      border: 1px solid #aaa;
-      -webkit-appearance: none;
-    }
-
-    textarea.css {
-      height: 110px;
-    }
-
-    button {
-      padding: 10px;
-      background: -webkit-linear-gradient(top, #eee, #aaa);
-      border: solid 1px #bbb;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    button:active {
-      background: -webkit-linear-gradient(top, #ccc, #eee);
-    }
-
-    input {
-      margin-left: 10px;
-      padding: 10px;
-    }
-
-    label {
-      margin-left: 5px;
-      margin-right: 10px;
-      color: #555;
-    }
-
-    ul {
-      text-align: left;
-      width: 500px;
-      margin: 0 auto;
-    }
-
-    li {
-      margin-bottom: 10px;
-    }
-
-    p.hint {
-      font-size: 9pt;
-    }
-
-    .bookmarklet {
-      padding-top: 20px;
-      margin-bottom: 30px;
-    }
-
-    .bookmarklet a {
-      font-size: 32pt;
-    }
-
-    .arrow-left, .arrow-right {
-      font-size: 28pt;
-      display: inline-block;
-    }
-
-    .arrow-left {
-      margin-right: 15px;
-    }
-
-    .arrow-right {
-      margin-left: 15px;
-    }
-
-    h2 {
-      margin-bottom: 15px;
-    }
-
-    .generator {
-      margin: 20px 0;
-    }
-
-    .alternatives {
-      list-style-type: none;
-      text-align: center;
-    }
-
-    .alternatives li {
-      display: inline-block;
-      margin-right: 20px;
-      color: blue;
-      text-decoration: underline;
-      cursor: pointer;
-    }
-
-    .alternatives li:last-child {
-      margin-right: 0;
-    }
-
-    * {
-      -moz-transition: -moz-transform 1s;
-      -webkit-transition: -webkit-transform 1s;
-      transition: transform 1s;
-    }
-
-    .rotated {
-      -moz-transform: rotate(360deg);
-      -webkit-transform: rotate(360deg);
-      transform: rotate(360deg);
-    }
-
-    .bubble {
-      box-shadow: 0 0 5px 0 #ccc;
-      border: 1px solid #aaa;
-      padding: 20px;
-      border-radius: 5px;
-      background-color: rgb(162, 193, 221);
-      background: -webkit-linear-gradient(rgb(162, 193, 221), rgb(122, 143, 181));
-      color: #333;
-      width: 600px;
-      margin: 30px auto 20px auto;
-    }
-  </style>
+  <link rel='stylesheet' href='style.css'></link>
 
   <script src="crunch.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
 
   <script>
-    var vendoredProperties = /\b(transition|transform|animation|keyframes)\b/g;
+    var vendoredProperties = /\b(transition|transform|animation|keyframes|filter)\b/g;
 
     function vendorizeLine(line, prefix) {
       return line.replace(vendoredProperties, prefix + '-$1')
@@ -376,6 +233,7 @@ $(document).ready(function () {
         var scriptText = $script.text();
         scriptText = scriptText.replace(/^\s+/, '');
         scriptText = scriptText.replace(/&gt;/g, '>');
+        scriptText = scriptText.replace('BOOKMARKLET_NAME', scriptClass);
         return scriptText.replace(/&lt;/g, '<');
       }
 
@@ -454,6 +312,8 @@ $(document).ready(function () {
     <li>rotaty</li>
     <li>trippy</li>
     <li>zotaty</li>
+    <li>blurry</li>
+    <li>inverty</li>
   </ul>
 
   <div class='bubble'>
