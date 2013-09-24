@@ -12,7 +12,7 @@
 
   var script = document.createElement( 'script' );
   script.type = 'text/javascript';
-  script.src = 'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js';
+  script.src = 'http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js';
 
   var readystate;
 
@@ -93,6 +93,33 @@
 }
   </script>
 
+  <script type="text/nonsense" class='shaky-css'>
+.BOOKMARKLET_NAME {
+  animation-iteration-count: infinite;
+  animation-duration: 1s;
+  animation-name: shakeForever;
+  animation-timing-function: linear;
+}
+
+@keyframes shakeForever {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  5% {
+    transform: rotate(5deg);
+  }
+
+  15% {
+    transform: rotate(-5deg);
+  }
+
+  20% {
+    transform: rotate(0deg);
+  }
+}
+  </script>
+
   <script type="text/nonsense" class='blurry-css'>
 .BOOKMARKLET_NAME {
   filter: blur(5px);
@@ -160,7 +187,7 @@ $(document).ready(function () {
   <link rel='stylesheet' href='style.css'></link>
 
   <script src="crunch.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
   <script>
     var vendoredProperties = /\b(transition|transform|animation|keyframes|filter)\b/g;
@@ -225,10 +252,16 @@ $(document).ready(function () {
         $link.text($('.bookmarklet-name').val());
       }
 
+      function scriptTagForScriptClass(scriptClass) {
+        return {
+          shaky: 'zotaty'
+        }[scriptClass] || 'rotaty';
+      }
+
       function scriptElementFor(cssOrJs, scriptClass) {
         var $script = $('script.' + scriptClass + '-' + cssOrJs);
         if ($script.length === 0) {
-          $script = $('script.rotaty-' + cssOrJs);
+          $script = $('script.' + scriptTagForScriptClass(scriptClass) + '-' + cssOrJs);
         }
         var scriptText = $script.text();
         scriptText = scriptText.replace(/^\s+/, '');
@@ -312,6 +345,7 @@ $(document).ready(function () {
     <li>rotaty</li>
     <li>trippy</li>
     <li>zotaty</li>
+    <li>shaky</li>
     <li>blurry</li>
     <li>inverty</li>
   </ul>

@@ -44,6 +44,10 @@ textarea.css {
   height: 110px;
 }
 
+textarea:focus {
+  height: 350px;
+}
+
 button {
   padding: 10px;
   background: -webkit-linear-gradient(top, #eee, #aaa);
