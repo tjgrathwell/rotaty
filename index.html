@@ -93,7 +93,7 @@
 }
   </script>
 
-  <script type="text/nonsense" class='shaky-css'>
+  <script type="text/nonsense" class='zoshaky-css'>
 .BOOKMARKLET_NAME {
   animation-iteration-count: infinite;
   animation-duration: 1s;
@@ -177,7 +177,7 @@ $(document).ready(function () {
     $hoveredElement = $(event.target);
   });
   $(document).on('keypress', function (event) {
-    if (event.which === 'z'.charCodeAt(0)) {
+    if (event.which === 'TRIGGER_KEY'.charCodeAt(0)) {
       $hoveredElement.toggleClass('BOOKMARKLET_NAME');
     }
   });
@@ -254,8 +254,16 @@ $(document).ready(function () {
 
       function scriptTagForScriptClass(scriptClass) {
         return {
-          shaky: 'zotaty'
+          zoshaky: 'zotaty'
         }[scriptClass] || 'rotaty';
+      }
+
+      function getTriggerKey () {
+        if ($('.trigger-by-key').prop('checked')) {
+          return $('.trigger-key').val();
+        } else {
+          return 'z';
+        }
       }
 
       function scriptElementFor(cssOrJs, scriptClass) {
@@ -267,6 +275,7 @@ $(document).ready(function () {
         scriptText = scriptText.replace(/^\s+/, '');
         scriptText = scriptText.replace(/&gt;/g, '>');
         scriptText = scriptText.replace('BOOKMARKLET_NAME', scriptClass);
+        scriptText = scriptText.replace('TRIGGER_KEY', getTriggerKey());
         return scriptText.replace(/&lt;/g, '<');
       }
 
@@ -291,17 +300,23 @@ $(document).ready(function () {
         $el.empty().append($link)
       });
 
-      $alternatives.click(function () {
-        var bookmarkletName = $(this).text();
+      function recompileWithName (bookmarkletName) {
         populateTextareas(bookmarkletName);
         $('.bookmarklet-name').val(bookmarkletName);
         recompile();
+      }
+
+      $alternatives.click(function () {
+        recompileWithName($(this).text());
         return false;
       });
 
       $('.create-bookmarklet').click(recompile);
       $('.dump-source').click(function () {
         console.log(selectedScriptText());
+      });
+      $('.trigger-key').keyup(function () {
+        recompileWithName($('.bookmarklet-name').val());
       });
 
       recompile();
@@ -330,10 +345,14 @@ $(document).ready(function () {
   <textarea class='css'></textarea>
   <textarea class='js'></textarea>
 
-  <button class='dump-source'>Log source to console</button>
+  <div>
+    <label><input class='trigger-by-key' type='checkbox' style="margin-right: 5px;">Trigger effect by mousing over and pressing</label><input class='trigger-key small' value='z' />
+  </div>
+
   <div class='generator'>
     <label>Name: <input class='bookmarklet-name' type='text' value='rotaty'></label>
     <button class='create-bookmarklet'>Recompile Bookmarklet</button>
+    <button class='dump-source'>Log source to console</button>
   </div>
 
   <h2>or click one of these fine links to try a prebuilt alternative</h2>
@@ -344,10 +363,10 @@ $(document).ready(function () {
     <li>flippy</li>
     <li>rotaty</li>
     <li>trippy</li>
-    <li>zotaty</li>
-    <li>shaky</li>
     <li>blurry</li>
     <li>inverty</li>
+    <li>zotaty</li>
+    <li>zoshaky</li>
   </ul>
 
   <div class='bubble'>
