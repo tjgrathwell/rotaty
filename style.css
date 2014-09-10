@@ -11,7 +11,7 @@ body {
   text-align: center;
   font-family: "Helvetica Neue", sans-serif;
   background-color: #eee;
-  background: -webkit-linear-gradient(top, #eee, #aaa);
+  background: linear-gradient(top, #eee, #aaa);
 }
 
 h2 {
@@ -50,14 +50,14 @@ textarea:focus {
 
 button {
   padding: 10px;
-  background: -webkit-linear-gradient(top, #eee, #aaa);
+  background: linear-gradient(top, #eee, #aaa);
   border: solid 1px #bbb;
   border-radius: 4px;
   cursor: pointer;
 }
 
 button:active {
-  background: -webkit-linear-gradient(top, #ccc, #eee);
+  background: linear-gradient(top, #ccc, #eee);
 }
 
 input {
@@ -131,14 +131,10 @@ h2 {
 }
 
 * {
-  -moz-transition: -moz-transform 1s;
-  -webkit-transition: -webkit-transform 1s;
   transition: transform 1s;
 }
 
 .rotated {
-  -moz-transform: rotate(360deg);
-  -webkit-transform: rotate(360deg);
   transform: rotate(360deg);
 }
 
@@ -148,7 +144,7 @@ h2 {
   padding: 20px;
   border-radius: 5px;
   background-color: rgb(162, 193, 221);
-  background: -webkit-linear-gradient(rgb(162, 193, 221), rgb(122, 143, 181));
+  background: linear-gradient(rgb(162, 193, 221), rgb(122, 143, 181));
   color: #333;
   width: 600px;
   margin: 30px auto 20px auto;

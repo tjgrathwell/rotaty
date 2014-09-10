@@ -12,7 +12,7 @@
 
   var script = document.createElement( 'script' );
   script.type = 'text/javascript';
-  script.src = 'http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js';
+  script.src = 'http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js';
 
   var readystate;
 
@@ -187,10 +187,10 @@ $(document).ready(function () {
   <link rel='stylesheet' href='style.css'></link>
 
   <script src="crunch.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
   <script>
-    var vendoredProperties = /\b(transition|transform|animation|keyframes|filter)\b/g;
+    var vendoredProperties = /\b(animation|keyframes|filter)\b/g;
 
     function vendorizeLine(line, prefix) {
       return line.replace(vendoredProperties, prefix + '-$1')
