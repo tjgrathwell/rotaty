@@ -26,9 +26,11 @@
 
   document.documentElement.childNodes[0].appendChild( script );
 })(window.jQuery, function($) {
+  $(document).ready(function () {
   </script>
 
   <script type="text/nonsense" class='after'>
+  });
 });
   </script>
 
@@ -133,54 +135,44 @@
   </script>
 
   <script type="text/nonsense" class='rotaty-js'>
-$(document).ready(function () {
-  var selector = '*:visible';
-  var delay = 1000;
-  $('body').append($('&lt;style&gt;' + the_css_from_the_above_textarea + '&lt;/style&gt;'));
+var selector = '*:visible';
+var delay = 1000;
 
-  setInterval(function () {
-    var allStuff = $(selector);
-    var randomIndex = Math.floor(Math.random() * allStuff.length);
-    allStuff.eq(randomIndex).toggleClass('BOOKMARKLET_NAME')
-  }, delay);
-});
+setInterval(function () {
+  var allStuff = $(selector);
+  var randomIndex = Math.floor(Math.random() * allStuff.length);
+  allStuff.eq(randomIndex).toggleClass('BOOKMARKLET_NAME')
+}, delay);
   </script>
 
   <script type="text/nonsense" class='trippy-js'>
-$(document).ready(function () {
-  var selector = '*:visible';
-  var delay = 1000;
-  $('body').append($('&lt;style&gt;' + the_css_from_the_above_textarea + '&lt;/style&gt;'));
+var selector = '*:visible';
+var delay = 1000;
 
-  function randomColor() {
-    return Math.floor(Math.random() * 255);
-  }
+function randomColor() {
+  return Math.floor(Math.random() * 255);
+}
 
-  setInterval(function () {
-    var allStuff = $(selector);
-    var randomIndex = Math.floor(Math.random() * allStuff.length);
+setInterval(function () {
+  var allStuff = $(selector);
+  var randomIndex = Math.floor(Math.random() * allStuff.length);
 
-    var prop = (Math.random() > 0.5) ? 'color' : 'background-color';
-    var color = 'rgb(' + randomColor() + ', ' + randomColor() + ', ' + randomColor() + ')';
+  var prop = (Math.random() > 0.5) ? 'color' : 'background-color';
+  var color = 'rgb(' + randomColor() + ', ' + randomColor() + ', ' + randomColor() + ')';
 
-    allStuff.eq(randomIndex).css(prop, color);
-  }, delay);
-});
+  allStuff.eq(randomIndex).css(prop, color);
+}, delay);
   </script>
 
   <script type="text/nonsense" class='zotaty-js'>
-$(document).ready(function () {
-  $('body').append($('&lt;style&gt;' + the_css_from_the_above_textarea + '&lt;/style&gt;'));
-
-  var $hoveredElement;
-  $(document).on('mouseover', function (event) {
-    $hoveredElement = $(event.target);
-  });
-  $(document).on('keypress', function (event) {
-    if (event.which === 'TRIGGER_KEY'.charCodeAt(0)) {
-      $hoveredElement.toggleClass('BOOKMARKLET_NAME');
-    }
-  });
+var $hoveredElement;
+$(document).on('mouseover', function (event) {
+  $hoveredElement = $(event.target);
+});
+$(document).on('keypress', function (event) {
+  if (event.which === 'TRIGGER_KEY'.charCodeAt(0)) {
+    $hoveredElement.toggleClass('BOOKMARKLET_NAME');
+  }
 });
   </script>
 
@@ -232,8 +224,9 @@ $(document).ready(function () {
 
         cssText = addVendorPrefixesAndRemoveNewlines(cssText);
 
-        var payloadText = raw_js;
-        payloadText = payloadText.replace('the_css_from_the_above_textarea', '"' + cssText + '"');
+        var payloadText = "$('body').append($('<style>" + cssText + "</style>'));\n";
+        payloadText += raw_js;
+
         return $('script.before').text() + payloadText + $('script.after').text();
       }
 
@@ -242,6 +235,7 @@ $(document).ready(function () {
       }
 
       function addBookmarkletAsHref($el, script) {
+        debugger;
         var crunched = crunch(script);
         $el.attr('href', 'javascript:' + crunched);
       }
@@ -273,10 +267,9 @@ $(document).ready(function () {
         }
         var scriptText = $script.text();
         scriptText = scriptText.replace(/^\s+/, '');
-        scriptText = scriptText.replace(/&gt;/g, '>');
+        scriptText = scriptText.replace(/\s+$/, "\n");
         scriptText = scriptText.replace('BOOKMARKLET_NAME', scriptClass);
-        scriptText = scriptText.replace('TRIGGER_KEY', getTriggerKey());
-        return scriptText.replace(/&lt;/g, '<');
+        return scriptText.replace('TRIGGER_KEY', getTriggerKey());
       }
 
       function populateTextareas(scriptClass) {
