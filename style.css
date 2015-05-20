@@ -38,6 +38,7 @@ textarea {
   box-shadow: 0 0 4px 0 #ccc;
   border: 1px solid #aaa;
   -webkit-appearance: none;
+  font-family: Consolas,Menlo,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,'Courier New',monospace;
 }
 
 textarea.css {

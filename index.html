@@ -1,7 +1,8 @@
+<!doctype html>
 <html>
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>rotaty</title>
 
   <script type='text/nonsense' class='before'>
@@ -176,10 +177,10 @@ $(document).on('keypress', function (event) {
 });
   </script>
 
-  <link rel='stylesheet' href='style.css'></link>
+  <link rel='stylesheet' href='style.css' />
 
   <script src="crunch.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
   <script>
     var vendoredProperties = /\b(animation|keyframes|filter)\b/g;
@@ -235,7 +236,6 @@ $(document).on('keypress', function (event) {
       }
 
       function addBookmarkletAsHref($el, script) {
-        debugger;
         var crunched = crunch(script);
         $el.attr('href', 'javascript:' + crunched);
       }
