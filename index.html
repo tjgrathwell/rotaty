@@ -177,6 +177,25 @@ $(document).on('keypress', function (event) {
 });
   </script>
 
+  <script type="text/nonsense" class='spinnem-js'>
+$('*').each(function (ix, element) {
+  var $el = $(element);
+  var radius = $el.css('border-radius');
+  var validRadius = false;
+  if (radius) {
+    validRadius = radius.match('%') && parseInt(radius, 10) >= 50;
+  } else if (window.getComputedStyle) {
+    // Firefox doesn't return values for .css('border-radius')...
+    var styles = window.getComputedStyle(element);
+    var tlr = styles['border-top-left-radius'];
+    validRadius = tlr && parseInt(tlr, 10) >= parseInt(styles['width'], 10) / 2.0;
+  }
+  if (validRadius) {
+    $el.toggleClass('BOOKMARKLET_NAME');
+  }
+});
+  </script>
+
   <link rel='stylesheet' href='style.css' />
 
   <script src="crunch.js"></script>
@@ -246,10 +265,16 @@ $(document).on('keypress', function (event) {
         $link.text($('.bookmarklet-name').val());
       }
 
-      function scriptTagForScriptClass(scriptClass) {
+      function scriptTagForScriptClass(cssOrJs, scriptClass) {
         return {
-          zoshaky: 'zotaty'
-        }[scriptClass] || 'rotaty';
+          js: {
+            zoshaky: 'zotaty'
+          },
+          css: {
+            zoshaky: 'zotaty',
+            spinnem: 'zotaty'
+          }
+        }[cssOrJs][scriptClass] || 'rotaty';
       }
 
       function getTriggerKey () {
@@ -263,7 +288,7 @@ $(document).on('keypress', function (event) {
       function scriptElementFor(cssOrJs, scriptClass) {
         var $script = $('script.' + scriptClass + '-' + cssOrJs);
         if ($script.length === 0) {
-          $script = $('script.' + scriptTagForScriptClass(scriptClass) + '-' + cssOrJs);
+          $script = $('script.' + scriptTagForScriptClass(cssOrJs, scriptClass) + '-' + cssOrJs);
         }
         var scriptText = $script.text();
         scriptText = scriptText.replace(/^\s+/, '');
@@ -360,6 +385,7 @@ $(document).on('keypress', function (event) {
     <li>inverty</li>
     <li>zotaty</li>
     <li>zoshaky</li>
+    <li>spinnem</li>
   </ul>
 
   <div class='bubble'>
