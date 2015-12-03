@@ -6,33 +6,23 @@
   <title>rotaty</title>
 
   <script type='text/nonsense' class='before'>
-(function($, payload){
-  if ($) {
-    return payload($);
-  }
+(function () {
+  function addStyleTag(css) {
+    var style = document.createElement('style');
 
-  var script = document.createElement( 'script' );
-  script.type = 'text/javascript';
-  script.src = 'http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js';
-
-  var readystate;
-
-  script.onload = script.onreadystatechange = function() {
-    if ( !(readystate = this.readyState) || readystate == 'loaded' || readystate == 'complete') {
-      payload(window.jQuery);
-
-      window.jQuery(script).remove();
+    style.type = 'text/css';
+    if (style.styleSheet){
+      style.styleSheet.cssText = css;
+    } else {
+      style.appendChild(document.createTextNode(css));
     }
-  };
 
-  document.documentElement.childNodes[0].appendChild( script );
-})(window.jQuery, function($) {
-  $(document).ready(function () {
+    document.head.appendChild(style);
+  }
   </script>
 
-  <script type="text/nonsense" class='after'>
-  });
-});
+  <script type='text/nonsense' class='after'>
+}());
   </script>
 
   <script type="text/nonsense" class='rotaty-css'>
@@ -136,51 +126,67 @@
   </script>
 
   <script type="text/nonsense" class='rotaty-js'>
-var selector = '*:visible';
+var selector = '*';
 var delay = 1000;
 
+function getRandomVisibleElement(selector) {
+  var allStuff = document.querySelectorAll(selector);
+  for (var i = 0; i < 100; i++) {
+    var randomIndex = Math.floor(Math.random() * allStuff.length);
+    if (allStuff[randomIndex].offsetWidth > 0) {
+      return allStuff[randomIndex];
+    }
+  }
+  throw new Error("No visible elements found after 100 tries...");
+}
+
 setInterval(function () {
-  var allStuff = $(selector);
-  var randomIndex = Math.floor(Math.random() * allStuff.length);
-  allStuff.eq(randomIndex).toggleClass('BOOKMARKLET_NAME')
+  getRandomVisibleElement(selector).classList.toggle('BOOKMARKLET_NAME')
 }, delay);
   </script>
 
   <script type="text/nonsense" class='trippy-js'>
-var selector = '*:visible';
+var selector = '*';
 var delay = 1000;
+
+function getRandomVisibleElement(selector) {
+  var allStuff = document.querySelectorAll(selector);
+  for (var i = 0; i < 100; i++) {
+    var randomIndex = Math.floor(Math.random() * allStuff.length);
+    if (allStuff[randomIndex].offsetWidth > 0) {
+      return allStuff[randomIndex];
+    }
+  }
+  throw new Error("No visible elements found after 100 tries...");
+}
 
 function randomColor() {
   return Math.floor(Math.random() * 255);
 }
 
 setInterval(function () {
-  var allStuff = $(selector);
-  var randomIndex = Math.floor(Math.random() * allStuff.length);
-
   var prop = (Math.random() > 0.5) ? 'color' : 'background-color';
   var color = 'rgb(' + randomColor() + ', ' + randomColor() + ', ' + randomColor() + ')';
 
-  allStuff.eq(randomIndex).css(prop, color);
+  getRandomVisibleElement(selector).style[prop] = color;
 }, delay);
   </script>
 
   <script type="text/nonsense" class='zotaty-js'>
-var $hoveredElement;
-$(document).on('mouseover', function (event) {
-  $hoveredElement = $(event.target);
+var hoveredElement;
+document.addEventListener('mouseover', function (event) {
+  hoveredElement = event.target;
 });
-$(document).on('keypress', function (event) {
+document.addEventListener('keypress', function (event) {
   if (event.which === 'TRIGGER_KEY'.charCodeAt(0)) {
-    $hoveredElement.toggleClass('BOOKMARKLET_NAME');
+    hoveredElement.classList.toggle('BOOKMARKLET_NAME');
   }
 });
   </script>
 
   <script type="text/nonsense" class='spinnem-js'>
-$('*').each(function (ix, element) {
-  var $el = $(element);
-  var radius = $el.css('border-radius');
+[].forEach.call(document.querySelectorAll('*'), function (element) {
+  var radius = element.style['border-radius'];
   var validRadius = false;
   if (radius) {
     validRadius = radius.match('%') && parseInt(radius, 10) >= 50;
@@ -191,7 +197,7 @@ $('*').each(function (ix, element) {
     validRadius = tlr && parseInt(tlr, 10) >= parseInt(styles['width'], 10) / 2.0;
   }
   if (validRadius) {
-    $el.toggleClass('BOOKMARKLET_NAME');
+    element.classList.toggle('BOOKMARKLET_NAME');
   }
 });
   </script>
@@ -244,7 +250,7 @@ $('*').each(function (ix, element) {
 
         cssText = addVendorPrefixesAndRemoveNewlines(cssText);
 
-        var payloadText = "$('body').append($('<style>" + cssText + "</style>'));\n";
+        var payloadText = "addStyleTag('" + cssText + "');\n";
         payloadText += raw_js;
 
         return $('script.before').text() + payloadText + $('script.after').text();
