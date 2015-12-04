@@ -156,3 +156,19 @@ h2 {
   width: 500px;
   margin: 0 auto;
 }
+
+.circle-outer {
+  width: 50px;
+  height: 50px;
+  background-color: #E7E7E7;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.circle-inner {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background-color: #F0F0F0;
+  border-radius: 50%;
+}

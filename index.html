@@ -69,10 +69,7 @@
 
   <script type="text/nonsense" class='zotaty-css'>
 .BOOKMARKLET_NAME {
-  animation-iteration-count: infinite;
-  animation-duration: 1s;
-  animation-name: rotateForever;
-  animation-timing-function: linear;
+  animation: rotateForever 1s linear 0s infinite !important;
 }
 
 @keyframes rotateForever {
@@ -88,10 +85,7 @@
 
   <script type="text/nonsense" class='zoshaky-css'>
 .BOOKMARKLET_NAME {
-  animation-iteration-count: infinite;
-  animation-duration: 1s;
-  animation-name: shakeForever;
-  animation-timing-function: linear;
+  animation: shakeForever 1s linear 0s infinite !important;
 }
 
 @keyframes shakeForever {
@@ -185,18 +179,19 @@ document.addEventListener('keypress', function (event) {
   </script>
 
   <script type="text/nonsense" class='spinnem-js'>
-[].forEach.call(document.querySelectorAll('*'), function (element) {
-  var radius = element.style['border-radius'];
-  var validRadius = false;
-  if (radius) {
-    validRadius = radius.match('%') && parseInt(radius, 10) >= 50;
-  } else if (window.getComputedStyle) {
-    // Firefox doesn't return values for .css('border-radius')...
-    var styles = window.getComputedStyle(element);
-    var tlr = styles['border-top-left-radius'];
-    validRadius = tlr && parseInt(tlr, 10) >= parseInt(styles['width'], 10) / 2.0;
+function validRadius(element) {
+  var styles = window.getComputedStyle(element);
+  var radius = styles['border-radius'] || styles['border-top-left-radius'];
+  if (radius && radius.match('%')) {
+    return parseInt(radius, 10) >= 50;
+  } else if (radius.match('px')) {
+    return parseInt(radius, 10) >= Math.floor(parseInt(styles['width'], 10) / 2);
   }
-  if (validRadius) {
+  return false;
+}
+
+[].forEach.call(document.querySelectorAll('*'), function (element) {
+  if (validRadius(element)) {
     element.classList.toggle('BOOKMARKLET_NAME');
   }
 });
@@ -405,6 +400,55 @@ document.addEventListener('keypress', function (event) {
     </ul>
   </div>
 
+  <script>
+    (function () {
+      function randInt(min, max) {
+        return min + Math.floor(Math.random() * (max - min));
+      }
+
+      function coinFlip(choice1, choice2) {
+        if (Math.random() < 0.5) {
+          return choice1;
+        } else {
+          return choice2;
+        }
+      }
+
+      var $content = $('.content');
+      var contentHeight = $content.height();
+      var contentLeft = $content.offset().left;
+
+      for (var i = 0; i < 25; i++) {
+        var outerSize = randInt(50, 120);
+        var innerSize = randInt(5, outerSize / 6);
+
+        var $inner = $('<div class="circle-inner"></div>');
+
+        var innerCss = {
+          width: innerSize,
+          height: innerSize
+        };
+        var distFromSide = outerSize / 5;
+        innerCss[coinFlip('top', 'bottom')] = distFromSide;
+        innerCss[coinFlip('left', 'right')] = distFromSide;
+
+        $inner.css(innerCss);
+
+        var outerCss = {
+          width: outerSize,
+          height: outerSize,
+          top: randInt(0, contentHeight)
+        };
+        outerCss[coinFlip('left', 'right')] = randInt(0, contentLeft - outerSize);
+
+        var $outer = $('<div class="circle-outer"></div>');
+        $outer.css(outerCss);
+
+        $outer.append($inner);
+        $('body').append($outer);
+      }
+    }());
+  </script>
 </div>
 </body>
 </html>
