@@ -330,7 +330,7 @@ function validRadius(element) {
         return false;
       });
 
-      $('.create-bookmarklet').click(recompile);
+      $('textarea').keyup(recompile);
       $('.dump-source').click(function () {
         console.log(selectedScriptText());
       });
@@ -370,7 +370,6 @@ function validRadius(element) {
 
   <div class='generator'>
     <label>Name: <input class='bookmarklet-name' type='text' value='rotaty'></label>
-    <button class='create-bookmarklet'>Recompile Bookmarklet</button>
     <button class='dump-source'>Log source to console</button>
   </div>
 
