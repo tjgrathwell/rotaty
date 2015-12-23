@@ -286,12 +286,16 @@ function validRadius(element) {
         }
       }
 
-      function scriptElementFor(cssOrJs, scriptClass) {
+      function rawScriptTextFor(cssOrJs, scriptClass) {
         var $script = $('script.' + scriptClass + '-' + cssOrJs);
         if ($script.length === 0) {
           $script = $('script.' + scriptTagForScriptClass(cssOrJs, scriptClass) + '-' + cssOrJs);
         }
-        var scriptText = $script.text();
+        return $script.text();
+      }
+
+      function scriptElementFor(cssOrJs, scriptClass) {
+        var scriptText = rawScriptTextFor(cssOrJs, scriptClass);
         scriptText = scriptText.replace(/^\s+/, '');
         scriptText = scriptText.replace(/\s+$/, "\n");
         scriptText = scriptText.replace('BOOKMARKLET_NAME', scriptClass);
@@ -301,6 +305,8 @@ function validRadius(element) {
       function populateTextareas(scriptClass) {
         $('textarea.css').val(scriptElementFor('css', scriptClass));
         $('textarea.js').val(scriptElementFor('js', scriptClass));
+        var hasTriggerKey = !!rawScriptTextFor('js', scriptClass).match(/TRIGGER_KEY/);
+        $('.trigger-key-container').toggleClass('hidden', !hasTriggerKey);
       }
 
       populateTextareas('rotaty');
@@ -364,7 +370,7 @@ function validRadius(element) {
   <textarea class='css'></textarea>
   <textarea class='js'></textarea>
 
-  <div>
+  <div class="trigger-key-container">
     <label><input class='trigger-by-key' type='checkbox' style="margin-right: 5px;">Trigger effect by mousing over and pressing</label><input class='trigger-key small' value='z' />
   </div>
 
