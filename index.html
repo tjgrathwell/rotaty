@@ -295,11 +295,11 @@ function validRadius(element) {
       }
 
       function scriptElementFor(cssOrJs, scriptClass) {
-        var scriptText = rawScriptTextFor(cssOrJs, scriptClass);
-        scriptText = scriptText.replace(/^\s+/, '');
-        scriptText = scriptText.replace(/\s+$/, "\n");
-        scriptText = scriptText.replace('BOOKMARKLET_NAME', scriptClass);
-        return scriptText.replace('TRIGGER_KEY', getTriggerKey());
+        return rawScriptTextFor(cssOrJs, scriptClass)
+          .replace(/^\s+/, '')
+          .replace(/\s+$/, "\n")
+          .replace('BOOKMARKLET_NAME', scriptClass)
+          .replace('TRIGGER_KEY', getTriggerKey());
       }
 
       function populateTextareas(scriptClass) {
@@ -442,7 +442,7 @@ function validRadius(element) {
         var outerCss = {
           width: outerSize,
           height: outerSize,
-          top: randInt(0, contentHeight)
+          top: randInt(0, contentHeight - outerSize)
         };
         outerCss[coinFlip('left', 'right')] = randInt(0, contentLeft - outerSize);
 
