@@ -203,6 +203,7 @@ function validRadius(element) {
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
   <script>
+    var originalBookmarkletName = 'zotaty';
     var vendoredProperties = /\b(animation|keyframes|filter)\b/g;
 
     function vendorizeLine(line, prefix) {
@@ -332,16 +333,19 @@ function validRadius(element) {
       }
 
       $alternatives.click(function () {
-        recompileWithName($(this).text());
+        originalBookmarkletName = $(this).text();
+        recompileWithName(originalBookmarkletName);
         return false;
       });
 
       $('textarea').keyup(recompile);
+      $('.bookmarklet-name').keyup(recompile);
+
       $('.dump-source').click(function () {
         console.log(selectedScriptText());
       });
       $('.trigger-key').keyup(function () {
-        recompileWithName($('.bookmarklet-name').val());
+        recompileWithName(originalBookmarkletName);
       });
 
       recompile();
