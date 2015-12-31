@@ -180,6 +180,10 @@ document.addEventListener('keypress', function (event) {
 
   <script type="text/nonsense" class='spinnem-js'>
 function validRadius(element) {
+  if (element.offsetWidth != element.offsetHeight) {
+    return;
+  }
+
   var styles = window.getComputedStyle(element);
   var radius = styles['border-radius'] || styles['border-top-left-radius'];
   if (radius && radius.match('%')) {
