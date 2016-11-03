@@ -105,6 +105,11 @@ p.hint {
 
 .arrow-right {
   margin-left: 15px;
+  transform: rotate(180deg);
+}
+
+.arrow-right.rotated {
+  transform: rotate(540deg);
 }
 
 h2 {
